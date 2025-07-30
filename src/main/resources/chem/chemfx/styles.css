@@ -1,0 +1,25 @@
+.tool-button {
+    -fx-background-color: transparent;
+    -fx-padding: 8;
+    -fx-cursor: hand;
+    -fx-border-color: #e0e0e0; /* Very light gray border */
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+}
+
+.tool-button:hover {
+    -fx-background-color: #eeeeee;
+    -fx-border-color: #cccccc;
+}
+
+.tool-button:selected,
+.tool-button:armed,
+.tool-button:focused:pressed {
+    -fx-background-color: #ffbb33; /* Orange like MolView */
+    -fx-border-color: #e69500;
+    -fx-text-fill: black;
+}
