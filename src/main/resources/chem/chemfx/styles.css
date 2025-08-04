@@ -12,14 +12,28 @@
 }
 
 .tool-button:hover {
-    -fx-background-color: #eeeeee;
-    -fx-border-color: #cccccc;
+    -fx-background-color: #dddddd;
+    -fx-border-color: #bbbbbb;
 }
 
 .tool-button:selected,
 .tool-button:armed,
 .tool-button:focused:pressed {
-    -fx-background-color: #ffbb33; /* Orange like MolView */
-    -fx-border-color: #e69500;
+    -fx-background-color: #f27847; /* Orange like MolView */
+    -fx-border-color: #fb5301;
     -fx-text-fill: black;
+}
+
+
+.palette-bg {
+    -fx-background-color: #78f1ff;
+    -fx-border-width: 2;
+    -fx-border-color: #1e435e;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.sidebar-bg {
+    -fx-background-color: #f0f0f0;
+
 }

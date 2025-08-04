@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,36 +14,71 @@
 <GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chem.chemfx.ChemFXController">
 
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="7.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="70.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="70.0" />
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
 
     <children>
-        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10" GridPane.rowIndex="1">
+        <VBox maxWidth="1.7976931348623157E308" prefHeight="360.0" prefWidth="80.0" spacing="10" styleClass="sidebar-bg" stylesheets="@styles.css" GridPane.halignment="LEFT" GridPane.rowIndex="1">
             <children>
-            <ToggleButton fx:id="carbon" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="tool-button" stylesheets="@styles.css" text="C" />
-            <ToggleButton fx:id="bond" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="tool-button" stylesheets="@styles.css" text="—">
+            <ToggleButton fx:id="singleBond" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" styleClass="tool-button" stylesheets="@styles.css">
                <font>
                   <Font name="Bell MT Bold" size="30.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@single.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </ToggleButton>
-            <ToggleButton fx:id="a1" layoutX="10.0" layoutY="58.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="tool-button" stylesheets="@styles.css" text="==">
+            <ToggleButton fx:id="doubleBond" layoutX="10.0" layoutY="58.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" styleClass="tool-button" stylesheets="@styles.css">
                <font>
                   <Font name="Bell MT Bold" size="30.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@double.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </ToggleButton>
+            <ToggleButton fx:id="tripleBond" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" styleClass="tool-button" stylesheets="@styles.css">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@triple.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </ToggleButton>
             </children>
+         <padding>
+            <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+         </padding>
         </VBox>
-      <ImageView fitHeight="50.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-         <image>
-            <Image url="@ChemFXLogo.png" />
-         </image>
-      </ImageView>
-      <AnchorPane fx:id="molStage" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="molStage" prefHeight="360.0" prefWidth="812.0" styleClass="palette-bg" stylesheets="@styles.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin></AnchorPane>
+      <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="60.0" styleClass="sidebar-bg" stylesheets="@styles.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <ToggleButton fx:id="carbon" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="tool-button" stylesheets="@styles.css" text="C" />
+         </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+         </padding>
+      </VBox>
     </children>
 </GridPane>

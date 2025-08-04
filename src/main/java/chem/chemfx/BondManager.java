@@ -4,9 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class BondManager {
 
@@ -21,7 +19,10 @@ public class BondManager {
 
     public void setBondMode(boolean mode) {
         this.bondMode = mode;
-        if (!mode) firstSelected = null;
+        if (!mode && firstSelected != null) {
+            firstSelected.toggleSelection();
+            firstSelected = null;
+        }
     }
 
     public boolean isBondMode() {
@@ -29,12 +30,19 @@ public class BondManager {
     }
 
     public void selectAtom(AtomNode atom) {
+        if (!bondMode) return;
+
         if (firstSelected == null) {
             firstSelected = atom;
             atom.toggleSelection();
         } else if (firstSelected != atom) {
-            drawBond(firstSelected, atom);
-            firstSelected.toggleSelection();
+            atom.toggleSelection();         // select second
+            firstSelected.toggleSelection(); // deselect first
+
+            drawBond(firstSelected, atom);  // bond
+            firstSelected = null;
+        } else {
+            // clicked same atom again to cancel
             atom.toggleSelection();
             firstSelected = null;
         }
@@ -50,7 +58,6 @@ public class BondManager {
         bondLine.setStrokeWidth(2);
 
         container.getChildren().add(0, bondLine); // behind atoms
-
         bonds.add(new Bond(a1, a2, bondLine));
     }
 
