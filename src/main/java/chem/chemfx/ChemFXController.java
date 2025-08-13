@@ -44,7 +44,7 @@ public class ChemFXController implements Initializable {
         molStage.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             if (carbon.isSelected()) {
                 AtomNode atom = new AtomNode(event.getX(), event.getY(), molStage, bondManager);
-                draggableMaker.makeDraggable(atom.getCircle());
+                draggableMaker.makeDraggable(atom.getAtomGroup());
             }
         });
 

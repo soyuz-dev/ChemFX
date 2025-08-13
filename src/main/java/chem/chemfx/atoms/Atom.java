@@ -29,6 +29,11 @@ public interface Atom {
 
     void bond(Atom other, int bondOrder, boolean needToRecur) throws CovalentBondException;
 
+    void unbond(Atom other, boolean needToRecur);
+
+    void unbond(Atom other);
+
+
     int[] getValenceShell();
     int[] getMaxValenceShell();
     void addElectronsTo(int[] shell, int[] maxCapacity, int electronsToAdd);
@@ -43,4 +48,6 @@ public interface Atom {
     void betaDecay(boolean isPositive);
 
     String toString();
+
+    public String getElementSymbol();
 }

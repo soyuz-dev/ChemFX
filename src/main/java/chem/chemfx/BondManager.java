@@ -50,16 +50,21 @@ public class BondManager {
 
     private void drawBond(AtomNode a1, AtomNode a2) {
         Line bondLine = new Line();
-        bondLine.startXProperty().bind(a1.getCircle().centerXProperty().add(a1.getCircle().layoutXProperty()));
-        bondLine.startYProperty().bind(a1.getCircle().centerYProperty().add(a1.getCircle().layoutYProperty()));
-        bondLine.endXProperty().bind(a2.getCircle().centerXProperty().add(a2.getCircle().layoutXProperty()));
-        bondLine.endYProperty().bind(a2.getCircle().centerYProperty().add(a2.getCircle().layoutYProperty()));
+
+        // Bind line ends to the center of each StackPane in container coordinates
+        bondLine.startXProperty().bind(a1.getAtomGroup().layoutXProperty().add(a1.getAtomGroup().widthProperty().divide(2)));
+        bondLine.startYProperty().bind(a1.getAtomGroup().layoutYProperty().add(a1.getAtomGroup().heightProperty().divide(2)));
+
+        bondLine.endXProperty().bind(a2.getAtomGroup().layoutXProperty().add(a2.getAtomGroup().widthProperty().divide(2)));
+        bondLine.endYProperty().bind(a2.getAtomGroup().layoutYProperty().add(a2.getAtomGroup().heightProperty().divide(2)));
+
         bondLine.setStroke(Color.BLACK);
         bondLine.setStrokeWidth(2);
 
-        container.getChildren().add(0, bondLine); // behind atoms
+        container.getChildren().add(0, bondLine); // draw behind atoms
         bonds.add(new Bond(a1, a2, bondLine));
     }
+
 
     public void deleteBondsConnectedTo(AtomNode atom) {
         Iterator<Bond> iterator = bonds.iterator();

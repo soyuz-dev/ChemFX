@@ -1,21 +1,24 @@
 package chem.chemfx;
 
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 
 public class DraggableMaker {
 
-    private double offsetX;
-    private double offsetY;
+    private static final class Delta { double x, y; }
 
     public void makeDraggable(Node node) {
-        node.setOnMousePressed(mouseEvent -> {
-            offsetX = mouseEvent.getSceneX() - node.getLayoutX();
-            offsetY = mouseEvent.getSceneY() - node.getLayoutY();
+        Delta delta = new Delta();
+
+        node.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            // Record offset between mouse (scene) and node’s layout position
+            delta.x = e.getSceneX() - node.getLayoutX();
+            delta.y = e.getSceneY() - node.getLayoutY();
         });
 
-        node.setOnMouseDragged(mouseEvent -> {
-            node.setLayoutX(mouseEvent.getSceneX() - offsetX);
-            node.setLayoutY(mouseEvent.getSceneY() - offsetY);
+        node.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+            // Move the whole StackPane; works fine in AnchorPane
+            node.relocate(e.getSceneX() - delta.x, e.getSceneY() - delta.y);
         });
     }
 }

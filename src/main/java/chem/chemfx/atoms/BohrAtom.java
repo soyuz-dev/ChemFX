@@ -5,7 +5,6 @@ package chem.chemfx.atoms;
 
 
 import javafx.util.Pair;
-
 import java.util.ArrayList;
 
 public class BohrAtom implements Atom {
@@ -100,7 +99,7 @@ public class BohrAtom implements Atom {
         this.atomicNumber = atomicNumber;
         this.neutronNumber = neutronNumber;
         this.name = elementNames[atomicNumber];
-        this.symbol = elementSymbols[atomicNumber];
+        this.symbol = elementSymbols[atomicNumber-1];
         fill(electronNumber);
     }
 
@@ -279,6 +278,28 @@ public class BohrAtom implements Atom {
         int[] otherValenceShell = other.getValenceShell();
         int otherMaxCapacity = other.getMaxCapacityValence();
 
+        for(Pair<Atom,Integer> p:this.bondedTo) {
+            if(p.getKey() == other){
+                int order = p.getValue();
+                if (bondOrder + order > 3) throw new CovalentBondException("Bond order cannot be more than 3");
+                if (bondOrder < 1) throw new CovalentBondException("Bond order must be positive. Perhaps you wanted Atom.unbond()?");
+
+                int electronsInThis = getNumberOfElectrons(thisValenceShell);
+                int electronsInOther = getNumberOfElectrons(otherValenceShell);
+
+                if (electronsInThis < bondOrder){throw new CovalentBondException("Not enough Electrons to bond");}
+                if (electronsInOther < bondOrder){throw new CovalentBondException("Not enough Electrons to bond");}
+
+                if (bondOrder + electronsInThis > thisMaxCapacity){throw new CovalentBondException("Not enough space to bond");}
+                if (bondOrder + electronsInOther > otherMaxCapacity){throw new CovalentBondException("Not enough space to bond");}
+
+                if(needToRecur) other.bond(this, bondOrder, false);
+
+                this.bondedTo.remove(p);
+                this.bondedTo.add(new Pair<>(other, bondOrder + order));
+            }
+        }
+
 
         if (bondOrder > 3){throw new CovalentBondException("Bond order cannot be more than 3");}
         if (bondOrder < 1) {throw new CovalentBondException("Bond order must be positive");}
@@ -296,6 +317,18 @@ public class BohrAtom implements Atom {
 
         this.bondedTo.add(new Pair<>(other, bondOrder));
         this.addElectronsTo(thisValenceShell, maxThisValenceShell, bondOrder);
+    }
+
+    public void unbond(Atom other, boolean needToRecur){
+        if(needToRecur) other.unbond(this);
+
+        for(Pair<Atom, Integer>p:getBondedTo()){
+            if(p.getKey() == other) {this.ionise(p.getValue()); break;}
+        }
+    }
+
+    public void unbond(Atom other) {
+        unbond(other, true);
     }
 
     public int[] getValenceShell(){
@@ -338,6 +371,8 @@ public class BohrAtom implements Atom {
             default -> throw new CovalentBondException("Unknown Error");
         };
     }
+
+    public String getElementSymbol(){ return this.symbol; }
 
     public int[][] getOrbitals() {
         return orbitals;
