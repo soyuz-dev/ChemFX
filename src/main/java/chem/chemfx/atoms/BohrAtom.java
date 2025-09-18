@@ -6,6 +6,8 @@ package chem.chemfx.atoms;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class BohrAtom implements Atom {
     private int neutronNumber;
@@ -137,9 +139,6 @@ public class BohrAtom implements Atom {
         }
     }
 
-    public static void addToJSON(String fileName, Atom atom){
-        Atom.addToJSON(fileName, atom);
-    }
 
     public static String deepToString(int[][] orbitals) {
         return Atom.deepToString(orbitals);
@@ -320,10 +319,14 @@ public class BohrAtom implements Atom {
     }
 
     public void unbond(Atom other, boolean needToRecur){
-        if(needToRecur) other.unbond(this);
+        if(needToRecur) other.unbond(this, false);
 
         for(Pair<Atom, Integer>p:getBondedTo()){
-            if(p.getKey() == other) {this.ionise(p.getValue()); break;}
+            if(p.getKey() == other) {
+                this.ionise(p.getValue());
+                this.bondedTo.remove(p);
+                break;
+            }
         }
     }
 
@@ -404,6 +407,9 @@ public class BohrAtom implements Atom {
         setup(orbitals);
         fill(atomicNumber);
     }
+
+
+
 
     public String toString(){
         return "Atom:\n" +

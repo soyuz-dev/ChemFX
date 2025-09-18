@@ -1,7 +1,6 @@
 package chem.chemfx;
 
 import chem.chemfx.atoms.Atom;
-import chem.chemfx.atoms.BohrAtom;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -14,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AtomNode {
+public abstract class AtomNode {
 
     /* ------------------ Static Fields ------------------ */
     private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
@@ -31,16 +30,12 @@ public class AtomNode {
 
     private boolean selected = false;
 
-    /* ------------------ Constructors ------------------ */
-    public AtomNode(double x, double y, Pane container, BondManager bondManager) {
-        this(x, y, container, bondManager, 6);
-    }
-
-    public AtomNode(double x, double y, Pane container, BondManager bondManager, int atomicNumber) {
+    /* ------------------ Constructor ------------------ */
+    protected AtomNode(double x, double y, Pane container, BondManager bondManager, Atom atom) {
         this.id = ID_GENERATOR.getAndIncrement();
         this.container = container;
         this.bondManager = bondManager;
-        this.atom = new BohrAtom(atomicNumber);
+        this.atom = atom;
 
         this.circle = createCircle();
         this.text = createText();
@@ -55,14 +50,14 @@ public class AtomNode {
 
     /* ------------------ UI Creation ------------------ */
     private Circle createCircle() {
-        Circle c = new Circle(15, Color.rgb(240,240,240));
+        Circle c = new Circle(15, Color.rgb(240, 240, 240));
         c.setUserData(this);
         return c;
     }
 
     private Text createText() {
         Text t = new Text(atom.getElementSymbol());
-        t.setStroke(Color.BLACK);
+        styleText(t);
         return t;
     }
 
@@ -81,9 +76,8 @@ public class AtomNode {
                 deselectAllExcept(this);
                 container.requestFocus();
             }
-            bondManager.selectAtom(this);
-            toggleSelection();
-            event.consume(); // consume the click; doesn't affect press/drag
+            bondManager.selectBondingAtom(this);
+            event.consume();
         });
     }
 
@@ -111,22 +105,15 @@ public class AtomNode {
         return selected;
     }
 
-    private void updateSelectionStyle() {
+    public void updateSelectionStyle() {
         if (selected) styleSelected();
         else styleUnselected();
     }
 
-    private void styleSelected() {
-        circle.setFill(Color.rgb(100,255,150));
-        circle.setStroke(Color.rgb(60,200,80));
-        circle.setStrokeWidth(2);
-    }
-
-    private void styleUnselected() {
-        circle.setFill(Color.rgb(240, 240,240));
-        circle.setStroke(null);
-        circle.setStrokeWidth(0);
-    }
+    /* ------------------ Abstract styling ------------------ */
+    protected abstract void styleText(Text text);
+    protected abstract void styleSelected();
+    protected abstract void styleUnselected();
 
     /* ------------------ Deletion ------------------ */
     public static void deleteSelectedAtoms() {
@@ -151,9 +138,28 @@ public class AtomNode {
     }
 
     /* ------------------ Getters ------------------ */
-    public int getId() { return id; }
-    public Text getText() { return text; }
-    public StackPane getAtomGroup() { return atomGroup; }
-    public Circle getCircle() { return circle; }
-    public Atom getAtom() { return atom; }
+    public int getId() {
+        return id;
+    }
+
+    public Text getText() {
+        return text;
+    }
+
+    public StackPane getAtomGroup() {
+        return atomGroup;
+    }
+
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public Atom getAtom() {
+        return atom;
+    }
+
+    /* ------- Static Methods ------ */
+    public static void selectAtom(AtomNode atomNode){
+        atomNode.setSelected(true);
+    }
 }

@@ -1,9 +1,6 @@
 package chem.chemfx.atoms;
 
-
-
 import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,11 +13,6 @@ public interface Atom {
         return result.toString();
     }
 
-    static void addToJSON(String fileName, Atom atom){
-        String json = "{";
-
-        json += "}";
-    }
 
     void fill(int electronNumber);
     void ionise(int electronLoss);

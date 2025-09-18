@@ -2,7 +2,7 @@
     -fx-background-color: transparent;
     -fx-padding: 8;
     -fx-cursor: hand;
-    -fx-border-color: #e0e0e0; /* Very light gray border */
+    -fx-border-color: #bbbbbb; /* Very light gray border */
     -fx-border-width: 1;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
@@ -13,7 +13,7 @@
 
 .tool-button:hover {
     -fx-background-color: #dddddd;
-    -fx-border-color: #bbbbbb;
+    -fx-border-color: #aaaaaa;
 }
 
 .tool-button:selected,
@@ -24,6 +24,29 @@
     -fx-text-fill: black;
 }
 
+.create-button {
+    -fx-background-color: transparent;
+    -fx-padding: 2;
+    -fx-cursor: hand;
+    -fx-border-color: #bbbbbb; /* Very light gray border */
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-text-fill: #333;
+}
+
+.create-button:hover {
+    -fx-background-color: #dddddd;
+    -fx-border-color: #aaaaaa;
+}
+
+.create-button:selected,
+.create-button:armed,
+.create-button:focused:pressed {
+    -fx-background-color: #f27847; /* Orange like MolView */
+    -fx-border-color: #fb5301;
+    -fx-text-fill: black;
+}
 
 .palette-bg {
     -fx-background-color: #ffffff;
@@ -35,5 +58,10 @@
 
 .sidebar-bg {
     -fx-background-color: #f0f0f0;
+}
 
+.text-field {
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-background-radius: 10;
 }

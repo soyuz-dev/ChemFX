@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ChemFXMain extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ChemFXMain.class.getResource("chemfx-main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ChemFXMain.class.getResource("chemfx-compound-view.fxml"));
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("ChemFXLogo.png")));
         Scene scene = new Scene(fxmlLoader.load(), 1080, 720);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
