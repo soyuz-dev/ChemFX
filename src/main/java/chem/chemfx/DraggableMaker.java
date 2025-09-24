@@ -36,7 +36,7 @@ public class DraggableMaker {
      * @param node the node to make draggable
      * @throws IllegalStateException if the node has not yet been added to a {@link Pane}
      */
-    public void makeDraggable(Node node) {
+    public void makeDraggable(Node node) throws IllegalStateException {
         Delta delta = new Delta();
 
         Pane parent = (Pane) node.getParent();

@@ -32,9 +32,6 @@ public class ChemFXController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         bondManager = new BondManager(molPane, singleBond);
 
-        singleBond.selectedProperty().addListener((obs, oldVal, newVal) -> {
-            bondManager.setBondMode(newVal ? 1 : bondManager.getBondMode());
-        });
 
         toggleGroup.getToggles().addAll(carbon, oxygen, nitrogen, singleBond, doubleBond, tripleBond);
 
