@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-
-<BorderPane prefHeight="263.0" prefWidth="377.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="263.0" prefWidth="377.0"
+            xmlns="http://javafx.com/javafx/23.0.1">
 
     <!-- Top: Tabs for different calculation types -->
     <top>
         <TabPane fx:id="formulaTabPane">
-            <Tab fx:id="idealGasTab" closable="false" text="Ideal Gas Law" />
-            <Tab fx:id="stoichiometryTab" closable="false" text="Stoichiometry" />
-            <Tab fx:id="equilibriumTab" closable="false" text="Equilibrium" />
+            <Tab fx:id="idealGasTab" closable="false" text="Ideal Gas Law"/>
+            <Tab fx:id="stoichiometryTab" closable="false" text="Stoichiometry"/>
+            <Tab fx:id="equilibriumTab" closable="false" text="Equilibrium"/>
         </TabPane>
     </top>
 
@@ -28,36 +20,37 @@
         <GridPane fx:id="inputGrid" hgap="10" style="-fx-padding: 10;" vgap="10">
             <!-- Dynamically populate rows:
                  Label for variable | TextField for input | Unit Label -->
-            <Label text="P:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField fx:id="pressureField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <Label text="atm" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <Label text="P:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="pressureField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="atm" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
 
-            <Label text="V:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <TextField fx:id="volumeField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="L" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
+            <Label text="V:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="volumeField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label text="L" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <columnConstraints>
+                <ColumnConstraints/>
+                <ColumnConstraints/>
+                <ColumnConstraints/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints/>
+                <RowConstraints/>
+            </rowConstraints>
         </GridPane>
     </center>
 
     <!-- Bottom: Calculate Button & Result -->
     <bottom>
         <HBox spacing="10" style="-fx-padding: 10;">
-            <Button fx:id="calculateButton" styleClass="tool-button" stylesheets="@styles.css" text="Calculate" />
+            <Button fx:id="calculateButton" styleClass="tool-button" stylesheets="@styles.css" text="Calculate"/>
             <Label fx:id="resultLabel" text="Result: " HBox.hgrow="ALWAYS">
-            <opaqueInsets>
-               <Insets />
-            </opaqueInsets>
-            <HBox.margin>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </HBox.margin></Label>
+                <opaqueInsets>
+                    <Insets/>
+                </opaqueInsets>
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </HBox.margin>
+            </Label>
         </HBox>
     </bottom>
 

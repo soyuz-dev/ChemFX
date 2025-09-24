@@ -3,36 +3,33 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-
-<GridPane hgap="10" style="-fx-padding: 10;" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
+<?import javafx.scene.layout.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" hgap="10" style="-fx-padding: 10;" vgap="10"
+          xmlns="http://javafx.com/javafx/23.0.1">
 
     <!-- Row 0: Molecule Name -->
     <HBox spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
-        <Label fx:id="moleculeNameLabel" text="Molecule Name:" />
+        <Label fx:id="moleculeNameLabel" text="Molecule Name:"/>
     </HBox>
 
     <!-- Row 1: 3D Pane Placeholder -->
-    <Pane fx:id="moleculePane" prefHeight="400" prefWidth="600" style="-fx-background-color: #dddddd;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+    <Pane fx:id="moleculePane" prefHeight="400" prefWidth="600" style="-fx-background-color: #dddddd;"
+          GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
 
     <!-- Row 2: Controls (Zoom and Reset) -->
     <HBox spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">
-        <Button fx:id="resetViewButton" text="Reset View" />
-        <Label text="Zoom:" />
-        <Slider fx:id="zoomSlider" max="2.0" min="0.5" value="1.0" />
+        <Button fx:id="resetViewButton" text="Reset View"/>
+        <Label text="Zoom:"/>
+        <Slider fx:id="zoomSlider" max="2.0" min="0.5" value="1.0"/>
     </HBox>
-   <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints/>
+        <ColumnConstraints/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+    </rowConstraints>
 
 </GridPane>

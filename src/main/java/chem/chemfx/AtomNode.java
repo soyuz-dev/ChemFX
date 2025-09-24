@@ -48,6 +48,30 @@ public abstract class AtomNode {
         container.getChildren().add(atomGroup);
     }
 
+    private static void deselectAllExcept(AtomNode except) {
+        for (AtomNode atom : ALL_ATOMS) {
+            if (atom != except && atom.isSelected()) {
+                atom.setSelected(false);
+            }
+        }
+    }
+
+    /* ------------------ Deletion ------------------ */
+    public static void deleteSelectedAtoms() {
+        Set<AtomNode> toDelete = new HashSet<>();
+        for (AtomNode atom : ALL_ATOMS) {
+            if (atom.isSelected()) {
+                toDelete.add(atom);
+            }
+        }
+        toDelete.forEach(AtomNode::delete);
+    }
+
+    /* ------- Static Methods ------ */
+    public static void selectAtom(AtomNode atomNode) {
+        atomNode.setSelected(true);
+    }
+
     /* ------------------ UI Creation ------------------ */
     private Circle createCircle() {
         Circle c = new Circle(15, Color.rgb(240, 240, 240));
@@ -81,12 +105,12 @@ public abstract class AtomNode {
         });
     }
 
-    private static void deselectAllExcept(AtomNode except) {
-        for (AtomNode atom : ALL_ATOMS) {
-            if (atom != except && atom.isSelected()) {
-                atom.setSelected(false);
-            }
-        }
+    public void toggleSelection() {
+        setSelected(!selected);
+    }
+
+    public boolean isSelected() {
+        return selected;
     }
 
     /* ------------------ Selection Handling ------------------ */
@@ -97,14 +121,6 @@ public abstract class AtomNode {
         }
     }
 
-    public void toggleSelection() {
-        setSelected(!selected);
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
     public void updateSelectionStyle() {
         if (selected) styleSelected();
         else styleUnselected();
@@ -112,19 +128,10 @@ public abstract class AtomNode {
 
     /* ------------------ Abstract styling ------------------ */
     protected abstract void styleText(Text text);
-    protected abstract void styleSelected();
-    protected abstract void styleUnselected();
 
-    /* ------------------ Deletion ------------------ */
-    public static void deleteSelectedAtoms() {
-        Set<AtomNode> toDelete = new HashSet<>();
-        for (AtomNode atom : ALL_ATOMS) {
-            if (atom.isSelected()) {
-                toDelete.add(atom);
-            }
-        }
-        toDelete.forEach(AtomNode::delete);
-    }
+    protected abstract void styleSelected();
+
+    protected abstract void styleUnselected();
 
     public void delete() {
         if (bondManager != null) {
@@ -156,10 +163,5 @@ public abstract class AtomNode {
 
     public Atom getAtom() {
         return atom;
-    }
-
-    /* ------- Static Methods ------ */
-    public static void selectAtom(AtomNode atomNode){
-        atomNode.setSelected(true);
     }
 }

@@ -13,16 +13,10 @@ import javafx.scene.layout.Pane;
  */
 public class DraggableMaker {
 
-    /** Margin (in pixels) to keep between the draggable node and the edges of its parent. */
-    private static final double margin = 10;
-
     /**
-     * Helper structure to store the offset (delta) between the mouse click position
-     * and the node's layout coordinates during a drag.
+     * Margin (in pixels) to keep between the draggable node and the edges of its parent.
      */
-    private static final class Delta {
-        double x, y;
-    }
+    private static final double margin = 10;
 
     /**
      * Makes the given {@link Node} draggable within its parent {@link Pane}.
@@ -89,5 +83,13 @@ public class DraggableMaker {
 
         // Relocate the node within the allowed area
         node.relocate(newX, newY);
+    }
+
+    /**
+     * Helper structure to store the offset (delta) between the mouse click position
+     * and the node's layout coordinates during a drag.
+     */
+    private static final class Delta {
+        double x, y;
     }
 }

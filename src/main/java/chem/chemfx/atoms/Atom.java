@@ -1,6 +1,7 @@
 package chem.chemfx.atoms;
 
 import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,6 +16,7 @@ public interface Atom {
 
 
     void fill(int electronNumber);
+
     void ionise(int electronLoss);
 
     void bond(Atom other, int bondOrder) throws CovalentBondException;
@@ -27,16 +29,21 @@ public interface Atom {
 
 
     int[] getValenceShell();
+
     int[] getMaxValenceShell();
+
     void addElectronsTo(int[] shell, int[] maxCapacity, int electronsToAdd);
+
     int getMaxCapacityValence();
 
     int getNeutronNumber();
+
     int getAtomicNumber();
 
     ArrayList<Pair<Atom, Integer>> getBondedTo();
 
     Atom alphaDecay();
+
     void betaDecay(boolean isPositive);
 
     String toString();

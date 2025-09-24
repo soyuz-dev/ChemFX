@@ -19,13 +19,9 @@ public class MoleculeBuilder {
     );
 
 
-
-
-
-    public static List<BohrAtom> buildIUPACChain(String name){
+    public static List<BohrAtom> buildIUPACChain(String name) {
         List<BohrAtom> atoms = new ArrayList<>();
         int carbonCount = -1;
-
 
 
         return atoms;

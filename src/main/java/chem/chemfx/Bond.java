@@ -2,7 +2,10 @@ package chem.chemfx;
 
 import chem.chemfx.atoms.Atom;
 import javafx.scene.shape.Line;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Represents a chemical bond between two {@link AtomNode}s.
@@ -17,27 +20,33 @@ import java.util.*;
  */
 public class Bond {
 
-    /** The first atom in the bond. */
-    public final AtomNode atom1;
-
-    /** The second atom in the bond. */
-    public final AtomNode atom2;
-
-    /** The graphical lines representing the bond. */
-    public final List<Line> lines;
-
-    /** Bond order (1 = single, 2 = double, 3 = triple). */
-    private int order;
-
-    /** Global list of all bonds currently present. */
+    /**
+     * Global list of all bonds currently present.
+     */
     public static final List<Bond> bonds = new ArrayList<>();
+    /**
+     * The first atom in the bond.
+     */
+    public final AtomNode atom1;
+    /**
+     * The second atom in the bond.
+     */
+    public final AtomNode atom2;
+    /**
+     * The graphical lines representing the bond.
+     */
+    public final List<Line> lines;
+    /**
+     * Bond order (1 = single, 2 = double, 3 = triple).
+     */
+    private int order;
 
     /**
      * Creates a new bond between two atoms with a single visual line.
      *
      * @param atom1 the first atom
      * @param atom2 the second atom
-     * @param line the JavaFX line representing the bond
+     * @param line  the JavaFX line representing the bond
      * @param order the bond order (e.g. 1 = single, 2 = double, etc.)
      */
     public Bond(AtomNode atom1, AtomNode atom2, Line line, int order) {
@@ -76,10 +85,39 @@ public class Bond {
      *
      * @param atom1 the first atom
      * @param atom2 the second atom
-     * @param line the JavaFX line representing the bond
+     * @param line  the JavaFX line representing the bond
      */
     public Bond(AtomNode atom1, AtomNode atom2, Line line) {
         this(atom1, atom2, line, 1);
+    }
+
+    /**
+     * Checks whether a bond already exists between two atoms.
+     *
+     * @param atom1 the first atom
+     * @param atom2 the second atom
+     * @return {@code true} if such a bond exists, {@code false} otherwise
+     */
+    public static boolean existsFor(AtomNode atom1, AtomNode atom2) {
+        for (Bond bond : bonds) {
+            if (bond.connects(atom1) && bond.connects(atom2)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Retrieves an existing bond between two atoms.
+     *
+     * @param atom1 the first atom
+     * @param atom2 the second atom
+     * @return the existing bond
+     * @throws NoSuchElementException if no bond exists between the given atoms
+     */
+    public static Bond getBond(AtomNode atom1, AtomNode atom2) {
+        for (Bond bond : bonds) {
+            if (bond.connects(atom1) && bond.connects(atom2)) return bond;
+        }
+        throw new NoSuchElementException();
     }
 
     /**
@@ -145,34 +183,5 @@ public class Bond {
      */
     public int getOrder() {
         return order;
-    }
-
-    /**
-     * Checks whether a bond already exists between two atoms.
-     *
-     * @param atom1 the first atom
-     * @param atom2 the second atom
-     * @return {@code true} if such a bond exists, {@code false} otherwise
-     */
-    public static boolean existsFor(AtomNode atom1, AtomNode atom2) {
-        for (Bond bond : bonds) {
-            if (bond.connects(atom1) && bond.connects(atom2)) return true;
-        }
-        return false;
-    }
-
-    /**
-     * Retrieves an existing bond between two atoms.
-     *
-     * @param atom1 the first atom
-     * @param atom2 the second atom
-     * @return the existing bond
-     * @throws NoSuchElementException if no bond exists between the given atoms
-     */
-    public static Bond getBond(AtomNode atom1, AtomNode atom2) {
-        for (Bond bond : bonds) {
-            if (bond.connects(atom1) && bond.connects(atom2)) return bond;
-        }
-        throw new NoSuchElementException();
     }
 }

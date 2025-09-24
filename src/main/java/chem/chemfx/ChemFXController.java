@@ -13,19 +13,23 @@ import java.util.ResourceBundle;
 
 public class ChemFXController implements Initializable {
 
-    @FXML private AnchorPane molPane;
-    @FXML private ToggleButton carbon;
-    @FXML private ToggleButton oxygen;
-    @FXML private ToggleButton nitrogen;
-    @FXML private ToggleButton singleBond;
-    @FXML private ToggleButton doubleBond;
-    @FXML private ToggleButton tripleBond;
-
-
     private final ToggleGroup toggleGroup = new ToggleGroup();
-
-
     private final DraggableMaker draggableMaker = new DraggableMaker();
+    @FXML
+    private AnchorPane molPane;
+    @FXML
+    private ToggleButton carbon;
+    @FXML
+    private ToggleButton oxygen;
+    @FXML
+    private ToggleButton nitrogen;
+    @FXML
+    private ToggleButton singleBond;
+    @FXML
+    private ToggleButton doubleBond;
+    @FXML
+    private ToggleButton tripleBond;
+
     private BondManager bondManager;
 
     @Override
@@ -53,11 +57,11 @@ public class ChemFXController implements Initializable {
         });
 
 
-
         // Bond mode
-        singleBond.selectedProperty().addListener((obs, oldVal, newVal) -> {bondManager.setBondMode(newVal?1: bondManager.getBondMode());});
+        singleBond.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            bondManager.setBondMode(newVal ? 1 : bondManager.getBondMode());
+        });
 
-        
 
         molPane.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.DELETE) {

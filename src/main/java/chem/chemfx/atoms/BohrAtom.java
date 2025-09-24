@@ -1,66 +1,11 @@
 package chem.chemfx.atoms;
 
 
-
-
-
 import javafx.util.Pair;
+
 import java.util.ArrayList;
 
 public class BohrAtom implements Atom {
-    private int neutronNumber;
-    private int atomicNumber;
-
-    public int[][] orbitals = {
-            {0},
-            {0, 0},
-            {0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0},
-            {0, 0}
-    };
-
-    private ArrayList<Pair<Atom, Integer>> bondedTo = new ArrayList<>();
-    private String symbol;
-    private String name;
-
-    private static final SubShellType[] labels = {
-            SubShellType.S,
-            SubShellType.P,
-            SubShellType.D,
-            SubShellType.F
-    };
-
-    private static final int S = 2;
-    private static final int P = 6;
-    private static final int D = 10;
-    private static final int F = 14;
-    private static final int[][] maxOrbitals = {
-            {S},
-            {S, P},
-            {S, P, D},
-            {S, P, D, F},
-            {S, P, D, F},
-            {S, P, D},
-            {S, P}
-    };
-
-    public static String[] elementSymbols = {
-            "H",  "He", "Li", "Be", "B",  "C",  "N",  "O",  "F",  "Ne",
-            "Na", "Mg", "Al", "Si", "P",  "S",  "Cl", "Ar", "K",  "Ca",
-            "Sc", "Ti", "V",  "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn",
-            "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y",  "Zr",
-            "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn",
-            "Sb", "Te", "I",  "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd",
-            "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb",
-            "Lu", "Hf", "Ta", "W",  "Re", "Os", "Ir", "Pt", "Au", "Hg",
-            "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th",
-            "Pa", "U",  "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm",
-            "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds",
-            "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
-    };
-
     public static final String[] elementNames = {
             "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon",
             "Sodium", "Magnesium", "Aluminium", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium",
@@ -75,6 +20,61 @@ public class BohrAtom implements Atom {
             "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium",
             "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"
     };
+    private static final SubShellType[] labels = {
+            SubShellType.S,
+            SubShellType.P,
+            SubShellType.D,
+            SubShellType.F
+    };
+    private static final int S = 2;
+    private static final int P = 6;
+    private static final int D = 10;
+    private static final int F = 14;
+    private static final int[][] maxOrbitals = {
+            {S},
+            {S, P},
+            {S, P, D},
+            {S, P, D, F},
+            {S, P, D, F},
+            {S, P, D},
+            {S, P}
+    };
+    private static final int[][] shellOrder = {
+            {1, 1},
+            {2, 1}, {2, 2},
+            {3, 1}, {3, 2},
+            {4, 1}, {3, 3}, {4, 2},
+            {5, 1}, {4, 3}, {5, 2},
+            {6, 1}, {4, 4}, {5, 3}, {6, 2},
+            {7, 1}, {5, 4}, {6, 3}, {7, 2}
+    };
+    public static String[] elementSymbols = {
+            "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
+            "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca",
+            "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn",
+            "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr",
+            "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn",
+            "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd",
+            "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb",
+            "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
+            "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th",
+            "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm",
+            "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds",
+            "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
+    };
+    public int[][] orbitals = {
+            {0},
+            {0, 0},
+            {0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0},
+            {0, 0}
+    };
+    private int neutronNumber;
+    private int atomicNumber;
+    private ArrayList<Pair<Atom, Integer>> bondedTo = new ArrayList<>();
+    private String symbol;
 
     //ORDER for aufbau();
     //1s
@@ -84,22 +84,13 @@ public class BohrAtom implements Atom {
     //5s    4d 5p
     //6s 4f 5d 6p
     //7s 5f 6d 7p
-
-    private static final int[][] shellOrder = {
-            {1,1},
-            {2,1}, {2,2},
-            {3,1}, {3,2},
-            {4,1}, {3,3}, {4,2},
-            {5,1}, {4,3}, {5,2},
-            {6,1}, {4,4}, {5,3}, {6,2},
-            {7,1}, {5,4}, {6,3}, {7,2}
-    };
+    private String name;
 
     public BohrAtom(int atomicNumber, int neutronNumber, int electronNumber) {
         this.atomicNumber = atomicNumber;
         this.neutronNumber = neutronNumber;
         this.name = elementNames[atomicNumber];
-        this.symbol = elementSymbols[atomicNumber-1];
+        this.symbol = elementSymbols[atomicNumber - 1];
         fill(electronNumber);
     }
 
@@ -112,22 +103,22 @@ public class BohrAtom implements Atom {
     }
 
     public BohrAtom(String elementName, boolean isName) {
-        if(isName) {
+        if (isName) {
             for (int i = 0; i < elementNames.length; i++) {
                 if (elementNames[i].equals(elementName)) {
-                    atomicNumber = i+1;
-                    neutronNumber = i+1;
+                    atomicNumber = i + 1;
+                    neutronNumber = i + 1;
                     name = elementNames[i];
                     symbol = elementSymbols[i];
                     fill(atomicNumber);
                     break;
                 }
             }
-        } else{
+        } else {
             for (int i = 0; i < elementSymbols.length; i++) {
                 if (elementSymbols[i].equals(elementName)) {
-                    atomicNumber = i+1;
-                    neutronNumber = i+1;
+                    atomicNumber = i + 1;
+                    neutronNumber = i + 1;
                     name = elementNames[i];
                     symbol = elementSymbols[i];
                     fill(atomicNumber);
@@ -142,15 +133,15 @@ public class BohrAtom implements Atom {
         return Atom.deepToString(orbitals);
     }
 
-    public static int getNumberOfElectrons(int[] shell){
+    public static int getNumberOfElectrons(int[] shell) {
         int numberOfElectrons = 0;
-        for (int s: shell) {
+        for (int s : shell) {
             numberOfElectrons += s;
         }
         return numberOfElectrons;
     }
 
-    public static int getNumberOfElectrons(int[][] shells){
+    public static int getNumberOfElectrons(int[][] shells) {
         int numberOfElectrons = 0;
         for (int[] shell : shells) {
             numberOfElectrons += getNumberOfElectrons(shell);
@@ -169,6 +160,7 @@ public class BohrAtom implements Atom {
                 {0, 0}
         };
     }
+
     public void fill(int electronNumber) throws AtomConstructionException {
 
         for (int[] orbital : shellOrder) {
@@ -193,6 +185,7 @@ public class BohrAtom implements Atom {
         // Handle special electron configurations for exceptions
         applyExceptions();
     }
+
     private void applyExceptions() {
         // Chromium (24) and Molybdenum (42)
         if (atomicNumber == 24 || atomicNumber == 42) {
@@ -252,7 +245,7 @@ public class BohrAtom implements Atom {
             }
         } else if (electronsToGain > 0) {
             for (int i = 0; i < orbitals.length; i++) {
-                for (int j = 0; j < orbitals[i].length ; j++) {
+                for (int j = 0; j < orbitals[i].length; j++) {
                     if (orbitals[i][j] < maxOrbitals[i][j]) {
                         int needed = Math.min(maxOrbitals[i][j] - orbitals[i][j], electronsToGain);
                         electronsToGain -= needed;
@@ -286,13 +279,18 @@ public class BohrAtom implements Atom {
         if (electronsInThis < bondOrder) throw new CovalentBondException("Not enough Electrons to bond (this)");
         if (electronsInOther < bondOrder) throw new CovalentBondException("Not enough Electrons to bond (other)");
 
-        if (bondOrder + electronsInThis > thisMaxCapacity) throw new CovalentBondException("Not enough space to bond (this)");
-        if (bondOrder + electronsInOther > otherMaxCapacity) throw new CovalentBondException("Not enough space to bond (other)");
+        if (bondOrder + electronsInThis > thisMaxCapacity)
+            throw new CovalentBondException("Not enough space to bond (this)");
+        if (bondOrder + electronsInOther > otherMaxCapacity)
+            throw new CovalentBondException("Not enough space to bond (other)");
 
         // Find existing bond (if any)
         Pair<Atom, Integer> existing = null;
         for (Pair<Atom, Integer> p : this.bondedTo) {
-            if (p.getKey() == other) { existing = p; break; }
+            if (p.getKey() == other) {
+                existing = p;
+                break;
+            }
         }
 
         if (existing != null) {
@@ -350,18 +348,18 @@ public class BohrAtom implements Atom {
     }
 
 
-    public int[] getValenceShell(){
-        for(int i = orbitals.length - 1; i >= 0; i--){
-            if(orbitals[i][0] != 0){
+    public int[] getValenceShell() {
+        for (int i = orbitals.length - 1; i >= 0; i--) {
+            if (orbitals[i][0] != 0) {
                 return orbitals[i];
             }
         }
         throw new CovalentBondException("All shells are empty");
     }
 
-    public int[] getMaxValenceShell(){
-        for(int i = orbitals.length - 1; i >= 0; i--){
-            if(orbitals[i][0] != 0){
+    public int[] getMaxValenceShell() {
+        for (int i = orbitals.length - 1; i >= 0; i--) {
+            if (orbitals[i][0] != 0) {
                 return maxOrbitals[i];
             }
         }
@@ -370,7 +368,7 @@ public class BohrAtom implements Atom {
 
     public void addElectronsTo(int[] shell, int[] maxCapacity, int electronsToAdd) {
         int eToAdd = electronsToAdd;
-        for (int j = 0; j < shell.length ; j++) {
+        for (int j = 0; j < shell.length; j++) {
             if (shell[j] < maxCapacity[j]) {
                 int needed = Math.min(maxCapacity[j] - shell[j], eToAdd);
                 eToAdd -= needed;
@@ -380,7 +378,7 @@ public class BohrAtom implements Atom {
     }
 
 
-    public int getMaxCapacityValence(){
+    public int getMaxCapacityValence() {
         int[] valence = getValenceShell();
         return switch (valence.length) {
             case 1 -> 2;
@@ -391,29 +389,44 @@ public class BohrAtom implements Atom {
         };
     }
 
-    public String getElementSymbol(){ return this.symbol; }
+    public String getElementSymbol() {
+        return this.symbol;
+    }
 
     public int[][] getOrbitals() {
         return orbitals;
     }
 
-    public int getNeutronNumber() {return neutronNumber;}
-    public int getAtomicNumber() {return atomicNumber;}
-    public String getName() {return name;}
-    public String getSymbol() {return symbol;}
+    public int getNeutronNumber() {
+        return neutronNumber;
+    }
 
-    public ArrayList<Pair<Atom, Integer>> getBondedTo() {return bondedTo;}
+    public int getAtomicNumber() {
+        return atomicNumber;
+    }
 
-    public BohrAtom alphaDecay(){
+    public String getName() {
+        return name;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public ArrayList<Pair<Atom, Integer>> getBondedTo() {
+        return bondedTo;
+    }
+
+    public BohrAtom alphaDecay() {
         atomicNumber -= 2;
         neutronNumber -= 2;
         setup(orbitals);
         fill(atomicNumber);
-        return new BohrAtom(2,2);
+        return new BohrAtom(2, 2);
     }
 
-    public void betaDecay(boolean isPositive){
-        if(isPositive){
+    public void betaDecay(boolean isPositive) {
+        if (isPositive) {
             atomicNumber--;
             neutronNumber++;
         } else {
@@ -425,14 +438,12 @@ public class BohrAtom implements Atom {
     }
 
 
-
-
-    public String toString(){
+    public String toString() {
         return "Atom:\n" +
-                "ProtonNumber: "+
-                atomicNumber +"\n"+
+                "ProtonNumber: " +
+                atomicNumber + "\n" +
                 "NeutronNumber: "
-                +neutronNumber +"\n"+
+                + neutronNumber + "\n" +
                 "Orbitals: \n"
                 + deepToString(orbitals);
     }

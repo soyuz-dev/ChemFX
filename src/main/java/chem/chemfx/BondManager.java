@@ -9,14 +9,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class BondManager {
 
-    private int bondMode = 0;
-    private AtomNode selected = null;
     private final Pane container;
     private final List<Bond> bonds = new ArrayList<>();
+    private int bondMode = 0;
+    private AtomNode selected = null;
     private ToggleButton bondToggle;
 
     public BondManager(Pane container, ToggleButton bondToggle) {
@@ -24,28 +26,30 @@ public class BondManager {
         this.bondToggle = bondToggle;
     }
 
+    public int getBondMode() {
+        return bondMode;
+    }
+
     public void setBondMode(int mode) {
         this.bondMode = mode;
-        if (mode==0 && selected != null) {
+        if (mode == 0 && selected != null) {
             selected.toggleSelection();
             selected = null;
         }
     }
 
-    public int getBondMode() {
-        return bondMode;
+    public boolean isBonding() {
+        return bondMode != 0;
     }
 
-    public boolean isBonding() {return bondMode!=0;}
-
     public boolean selectBondingAtom(AtomNode atom) {
-        if(selected == null) {
+        if (selected == null) {
             selected = atom;
             atom.setSelected(true);
-        } else if(!isBonding() && selected != atom){
+        } else if (!isBonding() && selected != atom) {
             selected = atom;
             atom.setSelected(true);
-        } else if(isBonding() && selected != atom){
+        } else if (isBonding() && selected != atom) {
             makeNewBond(selected, atom, bondMode); // bond
 
             atom.setSelected(false);
@@ -66,8 +70,8 @@ public class BondManager {
      * - If bond exists, creates a parallel line offset by 'l' pixels
      * - Lines are dynamically bound to atom positions for drag updates
      *
-     * @param a1 First AtomNode
-     * @param a2 Second AtomNode
+     * @param a1    First AtomNode
+     * @param a2    Second AtomNode
      * @param order Bond order (1-3)
      */
     private void makeNewBond(AtomNode a1, AtomNode a2, int order) {
@@ -86,12 +90,11 @@ public class BondManager {
                 // Existing bond: create parallel line offset
                 Bond existingBond = Bond.getBond(a1, a2);
                 double offsetDistance = 5; // pixels
-                if(existingBond.getOrder() == 2) offsetDistance = -5;
+                if (existingBond.getOrder() == 2) offsetDistance = -5;
                 bindLineToAtoms(bondLine, a1, a2, offsetDistance);
                 existingBond.bond(bondLine); // attach parallel line to bond
                 container.getChildren().add(0, bondLine); // draw behind atoms
             }
-
 
 
         } catch (CovalentBondException e) {
@@ -111,9 +114,9 @@ public class BondManager {
     /**
      * Binds a JavaFX Line to two AtomNodes, optionally creating a parallel offset.
      *
-     * @param line Line to bind
-     * @param a1 First AtomNode
-     * @param a2 Second AtomNode
+     * @param line   Line to bind
+     * @param a1     First AtomNode
+     * @param a2     Second AtomNode
      * @param offset Distance in pixels to offset the line perpendicular to the original bond
      */
     private void bindLineToAtoms(Line line, AtomNode a1, AtomNode a2, double offset) {
@@ -145,7 +148,9 @@ public class BondManager {
         }
     }
 
-    /** Helper binding: returns X coordinate of atom center */
+    /**
+     * Helper binding: returns X coordinate of atom center
+     */
     private DoubleBinding centerXBinding(AtomNode atom) {
         return Bindings.createDoubleBinding(
                 () -> atom.getAtomGroup().getLayoutX() + atom.getAtomGroup().getWidth() / 2,
@@ -154,7 +159,9 @@ public class BondManager {
         );
     }
 
-    /** Helper binding: returns Y coordinate of atom center */
+    /**
+     * Helper binding: returns Y coordinate of atom center
+     */
     private DoubleBinding centerYBinding(AtomNode atom) {
         return Bindings.createDoubleBinding(
                 () -> atom.getAtomGroup().getLayoutY() + atom.getAtomGroup().getHeight() / 2,
@@ -165,12 +172,13 @@ public class BondManager {
 
 
 
+
     public void deleteBondsConnectedTo(AtomNode atom) {
         Iterator<Bond> iterator = bonds.iterator();
         while (iterator.hasNext()) {
             Bond bond = iterator.next();
             if (bond.connects(atom)) {
-                for (Line l: bond.lines) container.getChildren().remove(l);
+                for (Line l : bond.lines) container.getChildren().remove(l);
                 bond.disconnect();
                 iterator.remove();
             }

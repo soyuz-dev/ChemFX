@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class ChemFXMain extends Application {
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ChemFXMain.class.getResource("chemfx-compound-view.fxml"));
@@ -20,9 +24,5 @@ public class ChemFXMain extends Application {
         stage.setScene(scene);
         stage.getIcons().add(icon);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }
