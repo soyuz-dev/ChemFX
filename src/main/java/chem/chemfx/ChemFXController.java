@@ -2,7 +2,6 @@ package chem.chemfx;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
@@ -22,7 +21,6 @@ public class ChemFXController implements Initializable {
     @FXML private ToggleButton doubleBond;
     @FXML private ToggleButton tripleBond;
 
-    private boolean bonding;
 
     private final ToggleGroup toggleGroup = new ToggleGroup();
 
@@ -36,7 +34,6 @@ public class ChemFXController implements Initializable {
 
         singleBond.selectedProperty().addListener((obs, oldVal, newVal) -> {
             bondManager.setBondMode(newVal ? 1 : bondManager.getBondMode());
-            bonding = bondManager.isBonding();
         });
 
         toggleGroup.getToggles().addAll(carbon, oxygen, nitrogen, singleBond, doubleBond, tripleBond);

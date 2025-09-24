@@ -6,8 +6,6 @@ package chem.chemfx.atoms;
 
 import javafx.util.Pair;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class BohrAtom implements Atom {
     private int neutronNumber;
@@ -265,74 +263,92 @@ public class BohrAtom implements Atom {
         }
     }
 
+// Put these into your BohrAtom class (replace the existing bond/unbond methods).
 
     public void bond(Atom other, int bondOrder) throws CovalentBondException {
-        this.bond(other, bondOrder, true);
+        bond(other, bondOrder, true);
     }
 
     public void bond(Atom other, int bondOrder, boolean needToRecur) throws CovalentBondException {
+        if (bondOrder > 3) throw new CovalentBondException("Bond order cannot be more than 3");
+        if (bondOrder < 1) throw new CovalentBondException("Bond order must be positive");
+
         int[] thisValenceShell = this.getValenceShell();
         int[] maxThisValenceShell = this.getMaxValenceShell();
         int thisMaxCapacity = this.getMaxCapacityValence();
+
         int[] otherValenceShell = other.getValenceShell();
         int otherMaxCapacity = other.getMaxCapacityValence();
-
-        for(Pair<Atom,Integer> p:this.bondedTo) {
-            if(p.getKey() == other){
-                int order = p.getValue();
-                if (bondOrder + order > 3) throw new CovalentBondException("Bond order cannot be more than 3");
-                if (bondOrder < 1) throw new CovalentBondException("Bond order must be positive. Perhaps you wanted Atom.unbond()?");
-
-                int electronsInThis = getNumberOfElectrons(thisValenceShell);
-                int electronsInOther = getNumberOfElectrons(otherValenceShell);
-
-                if (electronsInThis < bondOrder){throw new CovalentBondException("Not enough Electrons to bond");}
-                if (electronsInOther < bondOrder){throw new CovalentBondException("Not enough Electrons to bond");}
-
-                if (bondOrder + electronsInThis > thisMaxCapacity){throw new CovalentBondException("Not enough space to bond");}
-                if (bondOrder + electronsInOther > otherMaxCapacity){throw new CovalentBondException("Not enough space to bond");}
-
-                if(needToRecur) other.bond(this, bondOrder, false);
-
-                this.bondedTo.remove(p);
-                this.bondedTo.add(new Pair<>(other, bondOrder + order));
-            }
-        }
-
-
-        if (bondOrder > 3){throw new CovalentBondException("Bond order cannot be more than 3");}
-        if (bondOrder < 1) {throw new CovalentBondException("Bond order must be positive");}
 
         int electronsInThis = getNumberOfElectrons(thisValenceShell);
         int electronsInOther = getNumberOfElectrons(otherValenceShell);
 
-        if (electronsInThis < bondOrder){throw new CovalentBondException("Not enough Electrons to bond");}
-        if (electronsInOther < bondOrder){throw new CovalentBondException("Not enough Electrons to bond");}
+        if (electronsInThis < bondOrder) throw new CovalentBondException("Not enough Electrons to bond (this)");
+        if (electronsInOther < bondOrder) throw new CovalentBondException("Not enough Electrons to bond (other)");
 
-        if (bondOrder + electronsInThis > thisMaxCapacity){throw new CovalentBondException("Not enough space to bond");}
-        if (bondOrder + electronsInOther > otherMaxCapacity){throw new CovalentBondException("Not enough space to bond");}
+        if (bondOrder + electronsInThis > thisMaxCapacity) throw new CovalentBondException("Not enough space to bond (this)");
+        if (bondOrder + electronsInOther > otherMaxCapacity) throw new CovalentBondException("Not enough space to bond (other)");
 
-        if (needToRecur) other.bond(this, bondOrder, false);
+        // Find existing bond (if any)
+        Pair<Atom, Integer> existing = null;
+        for (Pair<Atom, Integer> p : this.bondedTo) {
+            if (p.getKey() == other) { existing = p; break; }
+        }
 
-        this.bondedTo.add(new Pair<>(other, bondOrder));
-        this.addElectronsTo(thisValenceShell, maxThisValenceShell, bondOrder);
+        if (existing != null) {
+            int currentOrder = existing.getValue();
+            int newOrder = currentOrder + bondOrder;
+            if (newOrder > 3) throw new CovalentBondException("Bond order cannot be more than 3");
+
+            // Let the other atom accept the increase first (so if it throws, we do not mutate 'this').
+            if (needToRecur) {
+                other.bond(this, bondOrder, false);
+            } else {
+                // When needToRecur == false, we're the callee — just update our side.
+            }
+
+            // Replace the old Pair with the updated order.
+            // Because javafx.util.Pair is immutable, remove old and add new.
+            this.bondedTo.remove(existing);
+            this.bondedTo.add(new Pair<>(other, newOrder));
+
+            // Add the extra electrons (only the additional electrons equal to bondOrder).
+            this.addElectronsTo(thisValenceShell, maxThisValenceShell, bondOrder);
+
+        } else { // No existing bond; create a fresh one
+            // Ask other to add its side first so we don't partially modify state if it fails.
+            if (needToRecur) {
+                other.bond(this, bondOrder, false);
+            }
+
+            this.bondedTo.add(new Pair<>(other, bondOrder));
+            this.addElectronsTo(thisValenceShell, maxThisValenceShell, bondOrder);
+        }
     }
 
-    public void unbond(Atom other, boolean needToRecur){
-        if(needToRecur) other.unbond(this, false);
+    public void unbond(Atom other, boolean needToRecur) {
+        // Let the other atom update its side first if recursion is requested,
+        // so we don't leave the other with a dangling bond if we throw or fail here.
+        if (needToRecur) other.unbond(this, false);
 
-        for(Pair<Atom, Integer>p:getBondedTo()){
-            if(p.getKey() == other) {
-                this.ionise(p.getValue());
-                this.bondedTo.remove(p);
+        Pair<Atom, Integer> found = null;
+        for (Pair<Atom, Integer> p : new ArrayList<>(this.bondedTo)) {
+            if (p.getKey() == other) {
+                found = p;
                 break;
             }
+        }
+        if (found != null) {
+            // remove the electrons contributed by the bond and remove the pair
+            this.ionise(found.getValue());
+            this.bondedTo.remove(found);
         }
     }
 
     public void unbond(Atom other) {
         unbond(other, true);
     }
+
 
     public int[] getValenceShell(){
         for(int i = orbitals.length - 1; i >= 0; i--){
