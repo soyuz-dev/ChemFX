@@ -19,11 +19,15 @@ public class BondManager {
     private final List<Bond> bonds = new ArrayList<>();
     private int bondMode = 0;
     private AtomNode selected = null;
-    private ToggleButton bondToggle;
+    private ToggleButton singleBond;
+    private ToggleButton doubleBond;
+    private ToggleButton tripleBond;
 
-    public BondManager(Pane container, ToggleButton bondToggle) {
+    public BondManager(Pane container, ToggleButton singleBond, ToggleButton doubleBond, ToggleButton tripleBond) {
         this.container = container;
-        this.bondToggle = bondToggle;
+        this.singleBond = singleBond;
+        this.doubleBond = doubleBond;
+        this.tripleBond = tripleBond;
     }
 
     public int getBondMode() {
@@ -56,7 +60,8 @@ public class BondManager {
             selected.setSelected(false);
 
             selected = null;
-            bondToggle.setSelected(false);
+            deselectAllToggles();
+
         } else {
             selected.setSelected(false);
             selected = null;
@@ -75,39 +80,64 @@ public class BondManager {
      * @param order Bond order (1-3)
      */
     private void makeNewBond(AtomNode a1, AtomNode a2, int order) {
-        Line bondLine = new Line();
-        bondLine.setStroke(Color.BLACK);
-        bondLine.setStrokeWidth(2);
 
         try {
-            if (!Bond.existsFor(a1, a2)) {
-                // No existing bond: create main line
+            Bond existing;
+            if (Bond.existsFor(a1, a2)){
+                existing = Bond.getBond(a1,a2);
+                container.getChildren().removeAll(existing.lines);
+                existing.disconnect();
+                existing = null;
+            }
+
+            if (order >= 1) {
+                Line bondLine = new Line();
+                bondLine.setStroke(Color.BLACK);
+                bondLine.setStrokeWidth(2);
+
                 bindLineToAtoms(bondLine, a1, a2, 0);
                 Bond newBond = new Bond(a1, a2, bondLine);
                 bonds.add(newBond);
-                container.getChildren().add(0, bondLine); // draw behind atoms
-            } else {
-                // Existing bond: create parallel line offset
-                Bond existingBond = Bond.getBond(a1, a2);
-                double offsetDistance = 5; // pixels
-                if (existingBond.getOrder() == 2) offsetDistance = -5;
-                bindLineToAtoms(bondLine, a1, a2, offsetDistance);
-                existingBond.bond(bondLine); // attach parallel line to bond
-                container.getChildren().add(0, bondLine); // draw behind atoms
+                container.getChildren().addFirst(bondLine);
+                a1.updateSelectionStyle();
+                a2.updateSelectionStyle();
             }
+            if (order >= 2){
+                Line bondLine = new Line();
+                bondLine.setStroke(Color.BLACK);
+                bondLine.setStrokeWidth(2);
+                bindLineToAtoms(bondLine, a1, a2, 5);
+                container.getChildren().addFirst(bondLine);
+                existing = Bond.getBond(a1,a2);
+                existing.bond(bondLine);
 
+                a1.updateSelectionStyle();
+                a2.updateSelectionStyle();
+            }
+            if (order == 3){
+                Line bondLine = new Line();
+                bondLine.setStroke(Color.BLACK);
+                bondLine.setStrokeWidth(2);
+                bindLineToAtoms(bondLine, a1, a2, 10);
 
+                container.getChildren().addFirst(bondLine);
+                existing = Bond.getBond(a1,a2);
+                existing.bond(bondLine);
+
+                a1.updateSelectionStyle();
+                a2.updateSelectionStyle();
+            }
         } catch (CovalentBondException e) {
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR,
-                    e.getMessage());
+
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.show();
         }
 
         // Update atom selection visuals and reset bond mode
         a1.updateSelectionStyle();
         a2.updateSelectionStyle();
-        bondToggle.setSelected(false);
+        deselectAllToggles();
         bondMode = 0;
     }
 
@@ -183,5 +213,11 @@ public class BondManager {
                 iterator.remove();
             }
         }
+    }
+
+    public void deselectAllToggles(){
+        singleBond.setSelected(false);
+        doubleBond.setSelected(false);
+        tripleBond.setSelected(false);
     }
 }

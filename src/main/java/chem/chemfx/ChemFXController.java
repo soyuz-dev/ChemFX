@@ -34,7 +34,7 @@ public class ChemFXController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        bondManager = new BondManager(molPane, singleBond);
+        bondManager = new BondManager(molPane, singleBond, doubleBond, tripleBond);
 
 
         toggleGroup.getToggles().addAll(carbon, oxygen, nitrogen, singleBond, doubleBond, tripleBond);
@@ -62,6 +62,15 @@ public class ChemFXController implements Initializable {
             bondManager.setBondMode(newVal ? 1 : bondManager.getBondMode());
         });
 
+
+        doubleBond.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            bondManager.setBondMode(newVal ? 2 : bondManager.getBondMode());
+        });
+
+
+        tripleBond.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            bondManager.setBondMode(newVal ? 3 : bondManager.getBondMode());
+        });
 
         molPane.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.DELETE) {

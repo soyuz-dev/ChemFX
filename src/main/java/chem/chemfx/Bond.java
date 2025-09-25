@@ -1,6 +1,7 @@
 package chem.chemfx;
 
 import chem.chemfx.atoms.Atom;
+import chem.chemfx.atoms.CovalentBondException;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
@@ -67,13 +68,12 @@ public class Bond {
      * @param atom1 the first atom
      * @param atom2 the second atom
      * @param lines the JavaFX lines representing the bond
-     * @param order the bond order
      */
-    public Bond(AtomNode atom1, AtomNode atom2, List<Line> lines, int order) {
+    public Bond(AtomNode atom1, AtomNode atom2, List<Line> lines) {
         this.atom1 = atom1;
         this.atom2 = atom2;
         this.lines = lines;
-        this.order = order;
+        this.order = lines.size();
         this.atom1.getAtom().bond(this.atom2.getAtom(), order);
         bonds.add(this);
 
@@ -149,9 +149,14 @@ public class Bond {
      * @param line the line to add to the visual representation
      */
     public void bond(Line line) {
-        ArrayList<Line> lines = new ArrayList<>();
-        lines.add(line);
-        bond(1, lines);
+        try {
+            bond(1, lines);
+            ArrayList<Line> lines = new ArrayList<>();
+            lines.add(line);
+        } catch (CovalentBondException e) {
+            System.out.println("Failed: MAKING NEW BOND");
+            throw e;
+        }
     }
 
     /**
@@ -168,11 +173,8 @@ public class Bond {
         this.atom1.updateSelectionStyle();
         this.atom2.updateSelectionStyle();
         this.order = 0;
-        int numLines = lines.size();
         bonds.remove(this);
-        for (int i = 0; i < numLines; i++) {
-            lines.remove(i);
-        }
+        lines.clear();
         System.out.println("DEBUG: BOND " + this + " with Order " + order + " deleted.");
     }
 
