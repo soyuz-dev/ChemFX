@@ -19,9 +19,9 @@ public class BondManager {
     private final List<Bond> bonds = new ArrayList<>();
     private int bondMode = 0;
     private AtomNode selected = null;
-    private ToggleButton singleBond;
-    private ToggleButton doubleBond;
-    private ToggleButton tripleBond;
+    private final ToggleButton singleBond;
+    private final ToggleButton doubleBond;
+    private final ToggleButton tripleBond;
 
     public BondManager(Pane container, ToggleButton singleBond, ToggleButton doubleBond, ToggleButton tripleBond) {
         this.container = container;
@@ -46,8 +46,8 @@ public class BondManager {
         return bondMode != 0;
     }
 
-    public boolean selectBondingAtom(AtomNode atom) {
-        if (selected == null) {
+    public void selectBondingAtom(AtomNode atom) {
+        if (selected == null || !AtomNode.exists(atom)) {
             selected = atom;
             atom.setSelected(true);
         } else if (!isBonding() && selected != atom) {
@@ -66,7 +66,6 @@ public class BondManager {
             selected.setSelected(false);
             selected = null;
         }
-        return false;
     }
 
     /**
@@ -80,14 +79,14 @@ public class BondManager {
      * @param order Bond order (1-3)
      */
     private void makeNewBond(AtomNode a1, AtomNode a2, int order) {
-
+        Bond existing = null;
         try {
-            Bond existing;
+
             if (Bond.existsFor(a1, a2)){
                 existing = Bond.getBond(a1,a2);
                 container.getChildren().removeAll(existing.lines);
                 existing.disconnect();
-                existing = null;
+                bonds.remove(existing);
             }
 
             if (order >= 1) {
@@ -96,21 +95,24 @@ public class BondManager {
                 bondLine.setStrokeWidth(2);
 
                 bindLineToAtoms(bondLine, a1, a2, 0);
-                Bond newBond = new Bond(a1, a2, bondLine);
-                bonds.add(newBond);
+                Bond newBond = new Bond(a1, a2, bondLine, this);
+
+
                 container.getChildren().addFirst(bondLine);
                 a1.updateSelectionStyle();
                 a2.updateSelectionStyle();
+                bonds.add(newBond);
             }
             if (order >= 2){
                 Line bondLine = new Line();
                 bondLine.setStroke(Color.BLACK);
                 bondLine.setStrokeWidth(2);
                 bindLineToAtoms(bondLine, a1, a2, 5);
-                container.getChildren().addFirst(bondLine);
+
                 existing = Bond.getBond(a1,a2);
                 existing.bond(bondLine);
 
+                container.getChildren().addFirst(bondLine);
                 a1.updateSelectionStyle();
                 a2.updateSelectionStyle();
             }
@@ -120,15 +122,22 @@ public class BondManager {
                 bondLine.setStrokeWidth(2);
                 bindLineToAtoms(bondLine, a1, a2, 10);
 
-                container.getChildren().addFirst(bondLine);
+
                 existing = Bond.getBond(a1,a2);
                 existing.bond(bondLine);
 
+                container.getChildren().addFirst(bondLine);
                 a1.updateSelectionStyle();
                 a2.updateSelectionStyle();
             }
         } catch (CovalentBondException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+
+            if (Bond.existsFor(a1, a2)){
+                Bond bond = Bond.getBond(a1, a2);
+                container.getChildren().removeAll(bond.lines);
+                bond.disconnect();
+            }
 
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.show();

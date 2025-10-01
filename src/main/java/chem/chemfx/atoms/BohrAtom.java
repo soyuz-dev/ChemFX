@@ -5,7 +5,13 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 
+/**
+ * Represents an atom modeled using the Bohr model with electron orbitals.
+ * Provides methods for orbital filling, ionization, bonding,
+ * decay processes, and atomic property retrieval.
+ */
 public class BohrAtom implements Atom {
+    /** Array of element names indexed by atomic number - 1. */
     public static final String[] elementNames = {
             "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon",
             "Sodium", "Magnesium", "Aluminium", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium",
@@ -20,16 +26,21 @@ public class BohrAtom implements Atom {
             "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium",
             "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"
     };
+    /** Subshell labels (s, p, d, f). */
     private static final SubShellType[] labels = {
             SubShellType.S,
             SubShellType.P,
             SubShellType.D,
             SubShellType.F
     };
+
+    /** Maximum electron capacities for subshells. */
     private static final int S = 2;
     private static final int P = 6;
     private static final int D = 10;
     private static final int F = 14;
+
+    /** Maximum orbital electron capacities for each shell. */
     private static final int[][] maxOrbitals = {
             {S},
             {S, P},
@@ -39,6 +50,8 @@ public class BohrAtom implements Atom {
             {S, P, D},
             {S, P}
     };
+
+    /** Defines the order of orbital filling (Aufbau principle). */
     private static final int[][] shellOrder = {
             {1, 1},
             {2, 1}, {2, 2},
@@ -48,6 +61,18 @@ public class BohrAtom implements Atom {
             {6, 1}, {4, 4}, {5, 3}, {6, 2},
             {7, 1}, {5, 4}, {6, 3}, {7, 2}
     };
+
+    /* ORDER for aufbau();
+     * 1s
+     * 2s       2p
+     * 3s       3p
+     * 4s    3d 4p
+     * 5s    4d 5p
+     * 6s 4f 5d 6p
+     * 7s 5f 6d 7p
+     */
+
+    /** Array of element symbols indexed by atomic number - 1. */
     public static String[] elementSymbols = {
             "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
             "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca",
@@ -62,6 +87,8 @@ public class BohrAtom implements Atom {
             "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds",
             "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
     };
+
+    /** Current electron configuration of the atom. */
     public int[][] orbitals = {
             {0},
             {0, 0},
@@ -71,21 +98,36 @@ public class BohrAtom implements Atom {
             {0, 0, 0},
             {0, 0}
     };
+
+    /** Number of neutrons in the atom. */
     private int neutronNumber;
+
+    /** Number of protons in the atom (atomic number). */
     private int atomicNumber;
-    private ArrayList<Pair<Atom, Integer>> bondedTo = new ArrayList<>();
+
+    /** List of atoms this atom is covalently bonded to along with bond order. */
+    private final ArrayList<Pair<Atom, Integer>> bondedTo = new ArrayList<>();
+
+    /** Symbol of the element (e.g., "H" for Hydrogen). */
     private String symbol;
 
-    //ORDER for aufbau();
-    //1s
-    //2s       2p
-    //3s       3p
-    //4s    3d 4p
-    //5s    4d 5p
-    //6s 4f 5d 6p
-    //7s 5f 6d 7p
+
+
+    /** Full name of the element (e.g., "Hydrogen"). */
     private String name;
 
+
+
+    // CONSTRUCTORS
+
+    /**
+     * Creates a BohrAtom with specified proton, neutron, and electron numbers.
+     *
+     * @param atomicNumber   Number of protons.
+     * @param neutronNumber  Number of neutrons.
+     * @param electronNumber Number of electrons.
+     * @throws AtomConstructionException if the electron number is invalid.
+     */
     public BohrAtom(int atomicNumber, int neutronNumber, int electronNumber) {
         this.atomicNumber = atomicNumber;
         this.neutronNumber = neutronNumber;
@@ -94,14 +136,36 @@ public class BohrAtom implements Atom {
         fill(electronNumber);
     }
 
+
+    /**
+     * Creates a BohrAtom with atomic number and neutrons, electrons defaulting to atomic number.
+     *
+     * @param atomicNumber  Number of protons and electrons.
+     * @param neutronNumber Number of neutrons.
+     * @throws AtomConstructionException if the electron number is invalid.
+     */
     public BohrAtom(int atomicNumber, int neutronNumber) {
         this(atomicNumber, neutronNumber, atomicNumber);
     }
 
+    /**
+     * Creates a BohrAtom with atomic number, while neutrons and electrons default to atomic number.
+     *
+     * @param atomicNumber Number of protons, neutrons and electrons.
+     * @throws AtomConstructionException if the electron number is invalid.
+     */
     public BohrAtom(int atomicNumber) {
         this(atomicNumber, atomicNumber);
     }
 
+
+    /**
+     * Creates a BohrAtom given an element name or symbol.
+     *
+     * @param elementName Name or symbol of the element.
+     * @param isName      True if {@code elementName} is a full name, false if it is a symbol.
+     * @throws AtomConstructionException if the element name or symbol is not found.
+     */
     public BohrAtom(String elementName, boolean isName) {
         if (isName) {
             for (int i = 0; i < elementNames.length; i++) {
@@ -128,11 +192,24 @@ public class BohrAtom implements Atom {
         }
     }
 
+    //UTILITY METHODS
 
+    /**
+     * Converts a 2D orbital array into a string representation.
+     *
+     * @param orbitals Orbital electron configuration.
+     * @return Formatted string representing the orbitals.
+     */
     public static String deepToString(int[][] orbitals) {
         return Atom.deepToString(orbitals);
     }
 
+    /**
+     * Calculates number of electrons in a single shell.
+     *
+     * @param shell Array of subshells.
+     * @return Number of electrons in the shell.
+     */
     public static int getNumberOfElectrons(int[] shell) {
         int numberOfElectrons = 0;
         for (int s : shell) {
@@ -141,6 +218,12 @@ public class BohrAtom implements Atom {
         return numberOfElectrons;
     }
 
+    /**
+     * Calculates number of electrons in all shells.
+     *
+     * @param shells 2D array of shells and subshells.
+     * @return Total number of electrons.
+     */
     public static int getNumberOfElectrons(int[][] shells) {
         int numberOfElectrons = 0;
         for (int[] shell : shells) {
@@ -149,8 +232,13 @@ public class BohrAtom implements Atom {
         return numberOfElectrons;
     }
 
-    public void setup(int[][] orbitals) {
-        orbitals = new int[][]{
+
+    /**
+     * Resets orbital configuration to an empty atom state.
+     *
+     */
+    public int[][] setup() {
+        return new int[][]{
                 {0},
                 {0, 0},
                 {0, 0, 0},
@@ -161,6 +249,13 @@ public class BohrAtom implements Atom {
         };
     }
 
+    /**
+     * Fills orbitals with electrons using the Aufbau principle, accounting for exceptions to the principle.
+     *
+     * @param electronNumber Number of electrons to place.
+     * @throws AtomConstructionException if orbitals overflow or indices are invalid.
+     */
+
     public void fill(int electronNumber) throws AtomConstructionException {
 
         for (int[] orbital : shellOrder) {
@@ -169,7 +264,7 @@ public class BohrAtom implements Atom {
 
             // Safety check: Ensure n and l are within bounds
             if (n < 0 || n >= orbitals.length || l < 0 || l >= orbitals[n].length) {
-                setup(this.orbitals);
+                this.orbitals = setup();
                 throw new AtomConstructionException("Principal Quantum Number and Angular Momentum Number out of bounds");
             }
 
@@ -186,6 +281,9 @@ public class BohrAtom implements Atom {
         applyExceptions();
     }
 
+    /**
+     * Adjusts electron configurations for special exceptions (e.g. Cr, Cu, Mo, etc.).
+     */
     private void applyExceptions() {
         // Chromium (24) and Molybdenum (42)
         if (atomicNumber == 24 || atomicNumber == 42) {
@@ -230,6 +328,11 @@ public class BohrAtom implements Atom {
         }
     }
 
+    /**
+     * Ionises the atom by adding or removing electrons.
+     *
+     * @param electronLoss Positive to remove electrons, negative to add electrons.
+     */
     public void ionise(int electronLoss) {
         int electronsToLose = electronLoss;
         int electronsToGain = -electronLoss;
@@ -256,12 +359,27 @@ public class BohrAtom implements Atom {
         }
     }
 
-// Put these into your BohrAtom class (replace the existing bond/unbond methods).
+    // ---------------- Bonding ----------------
 
+    /**
+     * Creates a covalent bond of a specified order.
+     *
+     * @param other     The other atom to bond with.
+     * @param bondOrder Bond order (1-3).
+     * @throws CovalentBondException if bonding rules are violated.
+     */
     public void bond(Atom other, int bondOrder) throws CovalentBondException {
         bond(other, bondOrder, true);
     }
 
+    /**
+     * Internal bonding with recursion control.
+     *
+     * @param other       The other atom.
+     * @param bondOrder   Bond order (1-3).
+     * @param needToRecur Whether to apply recursively on the other atom.
+     * @throws CovalentBondException if bonding rules are violated.
+     */
     public void bond(Atom other, int bondOrder, boolean needToRecur) throws CovalentBondException {
         if (bondOrder > 3) throw new CovalentBondException("Bond order cannot be more than 3");
         if (bondOrder < 1) throw new CovalentBondException("Bond order must be positive");
@@ -301,8 +419,6 @@ public class BohrAtom implements Atom {
             // Let the other atom accept the increase first (so if it throws, we do not mutate 'this').
             if (needToRecur) {
                 other.bond(this, bondOrder, false);
-            } else {
-                // When needToRecur == false, we're the callee — just update our side.
             }
 
             // Replace the old Pair with the updated order.
@@ -324,6 +440,12 @@ public class BohrAtom implements Atom {
         }
     }
 
+    /**
+     * Removes a bond with another atom.
+     *
+     * @param other       The bonded atom to remove.
+     * @param needToRecur Whether to remove the bond on the other atom as well.
+     */
     public void unbond(Atom other, boolean needToRecur) {
         // Let the other atom update its side first if recursion is requested,
         // so we don't leave the other with a dangling bond if we throw or fail here.
@@ -343,11 +465,27 @@ public class BohrAtom implements Atom {
         }
     }
 
+
+    /**
+     * Removes a bond with another atom (recursive by default).
+     *
+     * @param other The bonded atom to remove.
+     */
     public void unbond(Atom other) {
         unbond(other, true);
     }
 
 
+
+
+    // ---------------- Valence Helpers ----------------
+
+    /**
+     * Retrieves the current valence shell of the atom.
+     *
+     * @return The valence shell array.
+     * @throws CovalentBondException if no electrons exist.
+     */
     public int[] getValenceShell() {
         for (int i = orbitals.length - 1; i >= 0; i--) {
             if (orbitals[i][0] != 0) {
@@ -357,6 +495,12 @@ public class BohrAtom implements Atom {
         throw new CovalentBondException("All shells are empty");
     }
 
+    /**
+     * Retrieves the maximum capacity of the current valence shell.
+     *
+     * @return Maximum valence shell array.
+     * @throws CovalentBondException if no electrons exist.
+     */
     public int[] getMaxValenceShell() {
         for (int i = orbitals.length - 1; i >= 0; i--) {
             if (orbitals[i][0] != 0) {
@@ -420,7 +564,7 @@ public class BohrAtom implements Atom {
     public BohrAtom alphaDecay() {
         atomicNumber -= 2;
         neutronNumber -= 2;
-        setup(orbitals);
+        this.orbitals = setup();
         fill(atomicNumber);
         return new BohrAtom(2, 2);
     }
@@ -433,7 +577,7 @@ public class BohrAtom implements Atom {
             atomicNumber++;
             neutronNumber--;
         }
-        setup(orbitals);
+        this.orbitals = setup();
         fill(atomicNumber);
     }
 

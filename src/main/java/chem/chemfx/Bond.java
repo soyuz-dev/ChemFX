@@ -38,9 +38,15 @@ public class Bond {
      */
     public final List<Line> lines;
     /**
+     * The bond manager that manages the creation and deletion of Bond objects.
+     */
+    public final BondManager bondManager;
+    /**
      * Bond order (1 = single, 2 = double, 3 = triple).
      */
     private int order;
+
+
 
     /**
      * Creates a new bond between two atoms with a single visual line.
@@ -50,15 +56,15 @@ public class Bond {
      * @param line  the JavaFX line representing the bond
      * @param order the bond order (e.g. 1 = single, 2 = double, etc.)
      */
-    public Bond(AtomNode atom1, AtomNode atom2, Line line, int order) {
+    public Bond(AtomNode atom1, AtomNode atom2, Line line, int order, BondManager bondManager) {
+        atom1.getAtom().bond(atom2.getAtom(), order);
         this.atom1 = atom1;
         this.atom2 = atom2;
         this.lines = new ArrayList<>();
+        this.bondManager = bondManager;
         this.lines.add(line);
         this.order = order;
-        this.atom1.getAtom().bond(this.atom2.getAtom(), order);
         bonds.add(this);
-
         System.out.println("DEBUG: NEW BOND " + this + " with Order " + order + " instantiated.");
     }
 
@@ -69,12 +75,14 @@ public class Bond {
      * @param atom2 the second atom
      * @param lines the JavaFX lines representing the bond
      */
-    public Bond(AtomNode atom1, AtomNode atom2, List<Line> lines) {
+    public Bond(AtomNode atom1, AtomNode atom2, List<Line> lines, BondManager bondManager) {
+        atom1.getAtom().bond(atom2.getAtom(), order);
         this.atom1 = atom1;
         this.atom2 = atom2;
         this.lines = lines;
         this.order = lines.size();
-        this.atom1.getAtom().bond(this.atom2.getAtom(), order);
+        this.bondManager = bondManager;
+
         bonds.add(this);
 
         System.out.println("DEBUG: NEW BOND " + this + " with Order " + order + " instantiated.");
@@ -87,8 +95,8 @@ public class Bond {
      * @param atom2 the second atom
      * @param line  the JavaFX line representing the bond
      */
-    public Bond(AtomNode atom1, AtomNode atom2, Line line) {
-        this(atom1, atom2, line, 1);
+    public Bond(AtomNode atom1, AtomNode atom2, Line line, BondManager bondManager) {
+        this(atom1, atom2, line, 1, bondManager);
     }
 
     /**
@@ -150,9 +158,9 @@ public class Bond {
      */
     public void bond(Line line) {
         try {
-            bond(1, lines);
             ArrayList<Line> lines = new ArrayList<>();
             lines.add(line);
+            bond(1, lines);
         } catch (CovalentBondException e) {
             System.out.println("Failed: MAKING NEW BOND");
             throw e;

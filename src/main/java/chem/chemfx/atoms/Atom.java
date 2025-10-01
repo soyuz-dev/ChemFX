@@ -15,6 +15,8 @@ public interface Atom {
     }
 
 
+
+
     void fill(int electronNumber);
 
     void ionise(int electronLoss);
@@ -48,5 +50,5 @@ public interface Atom {
 
     String toString();
 
-    public String getElementSymbol();
+    String getElementSymbol();
 }

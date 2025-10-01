@@ -1,118 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="472.0" prefWidth="810.0"
-          xmlns="http://javafx.com/javafx/23.0.1" fx:controller="chem.chemfx.ChemFXController">
+
+<GridPane prefHeight="472.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chem.chemfx.ChemFXController">
 
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="90.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints maxHeight="-Infinity" minHeight="10.0" percentHeight="0.0" prefHeight="100.0"/>
-        <RowConstraints minHeight="10.0"/>
+        <RowConstraints maxHeight="-Infinity" minHeight="10.0" percentHeight="0.0" prefHeight="100.0" />
+        <RowConstraints minHeight="10.0" />
     </rowConstraints>
 
     <children>
-        <VBox maxWidth="1.7976931348623157E308" prefHeight="360.0" prefWidth="80.0" spacing="10" styleClass="sidebar-bg"
-              stylesheets="@styles.css" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+        <VBox maxWidth="1.7976931348623157E308" prefHeight="360.0" prefWidth="80.0" spacing="10" styleClass="sidebar-bg" stylesheets="@styles.css" GridPane.halignment="LEFT" GridPane.rowIndex="1">
             <children>
-                <ToggleButton fx:id="singleBond" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308"
-                              mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button"
-                              stylesheets="@styles.css">
+                <ToggleButton fx:id="singleBond" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button" stylesheets="@styles.css">
                     <font>
-                        <Font name="Bell MT Bold" size="30.0"/>
+                        <Font name="Bell MT Bold" size="30.0" />
                     </font>
                     <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@single.png"/>
+                                <Image url="@single.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </ToggleButton>
-                <ToggleButton fx:id="doubleBond" layoutX="10.0" layoutY="58.0" maxWidth="1.7976931348623157E308"
-                              mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button"
-                              stylesheets="@styles.css">
+                <ToggleButton fx:id="doubleBond" layoutX="10.0" layoutY="58.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button" stylesheets="@styles.css">
                     <font>
-                        <Font name="Bell MT Bold" size="30.0"/>
+                        <Font name="Bell MT Bold" size="30.0" />
                     </font>
                     <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@double.png"/>
+                                <Image url="@double.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </ToggleButton>
-                <ToggleButton fx:id="tripleBond" maxHeight="-Infinity" maxWidth="1.7976931348623157E308"
-                              mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button"
-                              stylesheets="@styles.css">
+                <ToggleButton fx:id="tripleBond" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button" stylesheets="@styles.css">
                     <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@triple.png"/>
+                                <Image url="@triple.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </ToggleButton>
             </children>
             <padding>
-                <Insets bottom="5.0" left="10.0" right="5.0" top="5.0"/>
+                <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
             </padding>
         </VBox>
-        <AnchorPane fx:id="molPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1980.0"
-                    styleClass="palette-bg" stylesheets="@styles.css" GridPane.columnIndex="1"
-                    GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1"
-                    GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
+        <AnchorPane fx:id="molPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1980.0" styleClass="palette-bg" stylesheets="@styles.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
             <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </GridPane.margin>
         </AnchorPane>
-        <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="60.0" spacing="10.0"
-              styleClass="sidebar-bg" stylesheets="@styles.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="60.0" spacing="10.0" styleClass="sidebar-bg" stylesheets="@styles.css" GridPane.columnIndex="2" GridPane.rowSpan="2147483647">
             <children>
-                <ToggleButton fx:id="carbon" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0"
-                              styleClass="tool-button" stylesheets="@styles.css" text="C"/>
-                <ToggleButton fx:id="oxygen" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0"
-                              styleClass="tool-button" stylesheets="@styles.css" text="O"/>
-                <ToggleButton fx:id="nitrogen" layoutX="15.0" layoutY="15.0" maxWidth="1.7976931348623157E308"
-                              mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button"
-                              stylesheets="@styles.css" text="N"/>
+            <Label fx:id="about" text="About Programmer" textFill="#002fff" wrapText="true">
+               <font>
+                  <Font name="Cascadia Code Regular" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <Button fx:id="btn_rxn_view" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="55.0" prefWidth="123.0" styleClass="create-button" stylesheets="@styles.css" text="Open Reaction View" textAlignment="JUSTIFY" />
+                <ToggleButton fx:id="carbon" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button" stylesheets="@styles.css" text="C" />
+                <ToggleButton fx:id="oxygen" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button" stylesheets="@styles.css" text="O" />
+                <ToggleButton fx:id="nitrogen" layoutX="15.0" layoutY="15.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button" stylesheets="@styles.css" text="N" />
+            <ToggleButton fx:id="custom" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="tool-button" stylesheets="@styles.css" text="..." />
             </children>
             <GridPane.margin>
-                <Insets/>
+                <Insets />
             </GridPane.margin>
             <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
         </VBox>
-        <TextField maxHeight="-Infinity" prefHeight="50.0" promptText="Enter the IUPAC name of a compund..."
-                   stylesheets="@styles.css" GridPane.columnIndex="1">
-            <GridPane.margin>
-                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
-            </GridPane.margin>
-        </TextField>
-        <Button maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0"
-                styleClass="create-button" stylesheets="@styles.css" text="Create Compund" textAlignment="CENTER"
-                wrapText="true" GridPane.columnIndex="2">
-            <GridPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </GridPane.margin>
-            <font>
-                <Font name="Product Sans Medium" size="12.0"/>
-            </font>
-        </Button>
-        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true"
-                   GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <ImageView fitHeight="87.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <image>
-                <Image url="@ChemFXLogo.png"/>
+                <Image url="@ChemFXLogo.png" />
             </image>
         </ImageView>
     </children>

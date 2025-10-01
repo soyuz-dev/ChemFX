@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="300.0" style="-fx-background-color: rgb(255, 162, 156);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="About Programmer" textAlignment="CENTER">
+         <font>
+            <Font name="Cascadia Code Regular" size="26.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </Label>
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Name: Rameshkuar Srivikash">
+         <font>
+            <Font name="Cascadia Code Regular" size="17.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </Label>
+      <Label alignment="CENTER" layoutX="20.0" layoutY="64.0" maxWidth="1.7976931348623157E308" text="Class: M25303">
+         <font>
+            <Font name="Cascadia Code Regular" size="17.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="10.0" layoutY="94.0" maxWidth="1.7976931348623157E308" text="App Version: 1.0">
+         <font>
+            <Font name="Cascadia Code Regular" size="17.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="180.0" fitWidth="181.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@ChemFXLogo.png" />
+         </image>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </ImageView>
+   </children>
+</VBox>

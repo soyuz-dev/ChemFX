@@ -6,4 +6,5 @@ module chem.chemfx {
 
     opens chem.chemfx to javafx.fxml;
     exports chem.chemfx;
+    exports chem.chemfx.atoms;
 }

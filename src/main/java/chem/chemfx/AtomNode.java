@@ -11,16 +11,13 @@ import javafx.util.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AtomNode {
 
     /* ------------------ Static Fields ------------------ */
-    private static final AtomicInteger ID_GENERATOR = new AtomicInteger(0);
     private static final Set<AtomNode> ALL_ATOMS = new HashSet<>();
 
     /* ------------------ Instance Fields ------------------ */
-    private final int id;
     private final Circle circle;
     private final Text text;
     private final StackPane atomGroup;
@@ -32,7 +29,6 @@ public abstract class AtomNode {
 
     /* ------------------ Constructor ------------------ */
     protected AtomNode(double x, double y, Pane container, BondManager bondManager, Atom atom) {
-        this.id = ID_GENERATOR.getAndIncrement();
         this.container = container;
         this.bondManager = bondManager;
         this.atom = atom;
@@ -67,10 +63,6 @@ public abstract class AtomNode {
         toDelete.forEach(AtomNode::delete);
     }
 
-    /* ------- Static Methods ------ */
-    public static void selectAtom(AtomNode atomNode) {
-        atomNode.setSelected(true);
-    }
 
     /* ------------------ UI Creation ------------------ */
     private Circle createCircle() {
@@ -144,10 +136,12 @@ public abstract class AtomNode {
         ALL_ATOMS.remove(this);
     }
 
-    /* ------------------ Getters ------------------ */
-    public int getId() {
-        return id;
+    public static boolean exists(AtomNode atomNode){
+        return ALL_ATOMS.contains(atomNode);
     }
+
+    /* ------------------ Getters ------------------ */
+
 
     public Text getText() {
         return text;

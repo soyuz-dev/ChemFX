@@ -1,56 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="263.0" prefWidth="377.0"
-            xmlns="http://javafx.com/javafx/23.0.1">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-    <!-- Top: Tabs for different calculation types -->
+<BorderPane prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chem.chemfx.ChemFXRxnController">
+
+    <!-- Top: TabPane -->
     <top>
         <TabPane fx:id="formulaTabPane">
-            <Tab fx:id="idealGasTab" closable="false" text="Ideal Gas Law"/>
-            <Tab fx:id="stoichiometryTab" closable="false" text="Stoichiometry"/>
-            <Tab fx:id="equilibriumTab" closable="false" text="Equilibrium"/>
+
+            <!-- Ideal Gas Law Tab -->
+            <Tab fx:id="idealGasTab" closable="false" text="Ideal Gas Law">
+                <GridPane fx:id="idealGasGrid" hgap="10" style="-fx-padding: 10;" vgap="10">
+                    <Label text="P:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="pressureField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label text="atm" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                    <Label text="V:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="volumeField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="L" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                    <Label text="T:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="temperatureField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="K" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                    <Label text="n:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="molesField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="mol" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+                </GridPane>
+            </Tab>
+
+            <!-- Equilibrium Tab -->
+            <Tab fx:id="equilibriumTab" closable="false" text="Equilibrium">
+                <GridPane fx:id="equilibriumGrid" hgap="10" style="-fx-padding: 10;" vgap="10">
+                    <Label text="Reactant 1:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="eqReactant1Field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label text="mol" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                    <Label text="Reactant 2:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="eqReactant2Field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="mol" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                    <Label text="Product 1:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="eqProduct1Field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="mol" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                    <Label text="Product 2:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="eqProduct2Field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="mol" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+               <Label text="Kc = " GridPane.rowIndex="4" />
+               <Label fx:id="equilibriumResultLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+                </GridPane>
+            </Tab>
+
         </TabPane>
     </top>
 
-    <!-- Center: Grid for inputs -->
-    <center>
-        <GridPane fx:id="inputGrid" hgap="10" style="-fx-padding: 10;" vgap="10">
-            <!-- Dynamically populate rows:
-                 Label for variable | TextField for input | Unit Label -->
-            <Label text="P:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="pressureField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <Label text="atm" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-
-            <Label text="V:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="volumeField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <Label text="L" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-            <columnConstraints>
-                <ColumnConstraints/>
-                <ColumnConstraints/>
-                <ColumnConstraints/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints/>
-                <RowConstraints/>
-            </rowConstraints>
-        </GridPane>
-    </center>
-
-    <!-- Bottom: Calculate Button & Result -->
+    <!-- Bottom: Calculate Button -->
     <bottom>
         <HBox spacing="10" style="-fx-padding: 10;">
-            <Button fx:id="calculateButton" styleClass="tool-button" stylesheets="@styles.css" text="Calculate"/>
-            <Label fx:id="resultLabel" text="Result: " HBox.hgrow="ALWAYS">
-                <opaqueInsets>
-                    <Insets/>
-                </opaqueInsets>
-                <HBox.margin>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                </HBox.margin>
-            </Label>
+            <Button fx:id="calculateButton" onAction="#calculate" text="Calculate" />
         </HBox>
     </bottom>
 

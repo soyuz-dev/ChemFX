@@ -45,18 +45,12 @@ public class DraggableMaker {
         });
 
         // Update position on drag, constrained to parent bounds
-        node.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-            clampAndRelocate(node, parent, e.getSceneX() - delta.x, e.getSceneY() - delta.y);
-        });
+        node.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> clampAndRelocate(node, parent, e.getSceneX() - delta.x, e.getSceneY() - delta.y));
 
         // Re-clamp position if the parent resizes
-        parent.widthProperty().addListener((obs, oldVal, newVal) -> {
-            clampAndRelocate(node, parent, node.getLayoutX(), node.getLayoutY());
-        });
+        parent.widthProperty().addListener((_, _, _) -> clampAndRelocate(node, parent, node.getLayoutX(), node.getLayoutY()));
 
-        parent.heightProperty().addListener((obs, oldVal, newVal) -> {
-            clampAndRelocate(node, parent, node.getLayoutX(), node.getLayoutY());
-        });
+        parent.heightProperty().addListener((_, _, _) -> clampAndRelocate(node, parent, node.getLayoutX(), node.getLayoutY()));
     }
 
     /**
